@@ -14,6 +14,7 @@ var (
   Meta:
     ${Meta.int-key}
     ${Meta.map-string-key.float-key}
+    ${Meta.kstring}/${Meta.map-string-key.string-key}
 
   Data: ${Data|json}
 
@@ -24,6 +25,7 @@ var (
   Meta:
     1
     1.2
+    string/value
 
   Data: {"Type":"http","Transform":null,"Context":null,"Config":{"key":"value"},"IgnoreErrors":false}
 

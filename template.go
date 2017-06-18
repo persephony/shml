@@ -70,11 +70,13 @@ func (t *Template) ExecuteIndex(idx ContextVariables) ([]byte, error) {
 	var last int
 
 	err := t.vars.iter(func(rawkey string, pos *position) error {
+		// get key name from buffer
 		key := string(pos.name(t.buf))
 		val, ok := idx[key]
 		if !ok {
 			return nil
 		}
+		//log.Println("KEY", key)
 
 		var (
 			ival = val.Interface()
@@ -91,8 +93,14 @@ func (t *Template) ExecuteIndex(idx ContextVariables) ([]byte, error) {
 		} else {
 			b = []byte(fmt.Sprintf("%v", ival))
 		}
-
-		out = append(out, append(t.buf[last:pos.s], b...)...)
+		// copy data
+		to := make([]byte, pos.s-last)
+		copy(to, t.buf[last:pos.s])
+		// append value
+		to = append(to, b...)
+		// copy to output buffer
+		out = append(out, to...)
+		// update position in original buffer
 		last = pos.e + 1
 		return nil
 	})
